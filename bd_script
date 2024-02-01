@@ -1,0 +1,51 @@
+-- Active: 1706740564296@@127.0.0.1@5432@postgres@public#Tables
+-- Active: 1706740564296@@127.0.0.1@5432@postgres@public
+CREATE TABLE "USER" (  
+    id SERIAL PRIMARY KEY,
+    create_time DATE,
+    name VARCHAR(255),
+    role CHAR(3),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    phone VARCHAR(255)
+);
+
+COMMENT ON TABLE "USER" IS 'Tabela para armazenar informações sobre algo';
+COMMENT ON COLUMN "USER".id IS 'Identificador único da tabela';
+COMMENT ON COLUMN "USER".create_time IS 'Data de criação do registro';
+COMMENT ON COLUMN "USER".name IS 'Nome associado ao registro';
+
+CREATE TABLE "CLIENT" (  
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES "USER"(id),
+    create_time DATE,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    phone VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES "USER"(id)
+);
+
+COMMENT ON TABLE "CLIENT" IS 'Tabela para armazenar informações de clientes';
+COMMENT ON COLUMN "CLIENT".id IS 'Identificador único do cliente';
+COMMENT ON COLUMN "CLIENT".user_id IS 'Chave estrangeira referenciando a tabela usuario';
+COMMENT ON COLUMN "CLIENT".name IS 'Nome do cliente';
+COMMENT ON COLUMN "CLIENT".email IS 'Email do cliente';
+COMMENT ON COLUMN "CLIENT".phone IS 'Telefone do cliente';
+
+CREATE TABLE "LOCATION" (  
+    id SERIAL PRIMARY KEY,
+    client_id INT REFERENCES "CLIENT"(id),
+    create_time DATE,
+    name VARCHAR(255),
+    address VARCHAR(255),
+    position_x VARCHAR(255),
+    position_y VARCHAR(255),
+    FOREIGN KEY (client_id) REFERENCES "CLIENT"(id)
+);
+
+COMMENT ON TABLE "LOCATION" IS 'Tabela para armazenar informações de localização dos clientes';
+COMMENT ON COLUMN "LOCATION".id IS 'Identificador único da localização';
+COMMENT ON COLUMN "LOCATION".position_x IS 'Posição X';
+COMMENT ON COLUMN "LOCATION".position_y IS 'Posição Y';
+
+
